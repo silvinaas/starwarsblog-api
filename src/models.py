@@ -23,7 +23,7 @@ class People(db.Model):
     name = db.Column(db.String(120), unique=True, nullable=False)
     gender = db.Column(db.String(120), unique=True, nullable=False)
     hair_color = db.Column(db.String(120), unique=True, nullable=False)
-    eye_color = db.Column(db.String(120), unique=True, nullable=False)
+    eye_color = db.Column(db.String(120), unique=True, nullable=True)
 
     def __repr__(self):
         return '<People %r>' % self.name

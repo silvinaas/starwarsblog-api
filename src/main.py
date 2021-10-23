@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+import json
 from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -41,6 +42,22 @@ def handle_hello():
 
 @app.route('/people', methods=['GET'])
 def get_people():
+    people_query = People.query.all()
+# map the results and your list of people  inside of the all_people variable
+    all_people = list(map(lambda x: x.serialize(), people_query))
+    return jsonify(all_people), 200
+
+@app.route('/people', methods=['POST'])
+def add_people():
+    people_list = json.loads(request.data)
+    print(people_list)
+    eye_color = request.json.get("eye_color", "empty")
+    #eye_color = "empty"
+    #if eye_color != "empty":
+    #eye_color = people_list["eye_color"]
+    Person = People(name=people_list["name"], gender=people_list["gender"], hair_color=people_list["hair_color"], eye_color=eye_color)
+    db.session.add(Person)
+    db.session.commit()
     people_query = People.query.all()
 # map the results and your list of people  inside of the all_people variable
     all_people = list(map(lambda x: x.serialize(), people_query))
