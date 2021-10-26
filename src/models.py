@@ -21,9 +21,9 @@ class User(db.Model):
 class People(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
-    gender = db.Column(db.String(120), unique=True, nullable=False)
-    hair_color = db.Column(db.String(120), unique=True, nullable=False)
-    eye_color = db.Column(db.String(120), unique=True, nullable=True)
+    gender = db.Column(db.String(120), unique=False, nullable=False)
+    hair_color = db.Column(db.String(120), unique=False, nullable=False)
+    eye_color = db.Column(db.String(120), unique=False, nullable=True)
 
     def __repr__(self):
         return '<People %r>' % self.name
@@ -35,5 +35,24 @@ class People(db.Model):
             "gender": self.gender,
             "hair_color": self.hair_color,
             "eye_color": self.eye_color,
+            # do not serialize the password, its a security breach
+        }
+
+class Planets(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    population = db.Column(db.String(120), unique=False, nullable=False)
+    terrain = db.Column(db.String(120), unique=False, nullable=False)
+    
+
+    def __repr__(self):
+        return '<Planets %r>' % self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "population": self.population,
+            "terrain": self.terrain,
             # do not serialize the password, its a security breach
         }
